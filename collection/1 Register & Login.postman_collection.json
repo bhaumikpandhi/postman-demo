@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "551435d6-4c61-435e-8844-00ed3006a092",
+		"name": "1 Register & Login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12227863",
+		"_collection_link": "https://www.postman.com/bold-eclipse-79885/workspace/postman-load-testing/collection/12227863-551435d6-4c61-435e-8844-00ed3006a092?action=share&source=collection_link&creator=12227863"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"var response = pm.response.json();",
+							"",
+							"// Check if the response contains the email",
+							"if (response.user.email) {",
+							"    pm.collectionVariables.set(\"user_email\", response.user.email);",
+							"} else {",
+							"    console.log(\"Email not found in response\");",
+							"}",
+							"",
+							"// Chai Testing framework",
+							"// pm.test(\"API should not fail\", function () {",
+							"//     pm.expect(pm.response.code).to.be(200);",
+							"// });"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// pm.collectionVariables.set",
+							"// pm.variables.set",
+							"// pm.environment.set",
+							"// calculation & modifications"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/Users/bhaumikpandhi/Desktop/Screenshot 2022-06-08 at 5.38.06 PM.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url}}/{{prefix}}/register",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"{{prefix}}",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login API",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"var response = pm.response.json();",
+							"",
+							"// Check if the response contains the token",
+							"if (response.token) {",
+							"    pm.collectionVariables.set(\"authToken\", response.token);",
+							"    console.log(\"Token stored successfully:\", response.token);",
+							"} else {",
+							"    console.log(\"Token not found in response\");",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"{{user_email}}\",\n    \"password\" : \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demo-app.test/api/login",
+					"protocol": "https",
+					"host": [
+						"demo-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user details",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://demo-app.test/api/user",
+					"protocol": "https",
+					"host": [
+						"demo-app",
+						"test"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "https://laravel-10-demo.test/api",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_email",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
